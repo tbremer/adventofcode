@@ -1,0 +1,5 @@
+{
+    "javascript.format.enable": true,
+    "json.format.enable": true,
+    "editor.formatOnSave": true
+}
