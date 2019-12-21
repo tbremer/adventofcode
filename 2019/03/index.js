@@ -68,6 +68,7 @@ function Wire(coordinateArray) {
   const position = [0, 0];
   const cells = {};
   const parsedPath = coordinateArray.map(parseWireSegment);
+  let totalSteps = 0;
 
   this.path = parsedPath;
   this.cells = cells;
@@ -104,8 +105,9 @@ function Wire(coordinateArray) {
       for (let i = 0; i < segment.length; i++) {
         position[positionIdx] += additive;
         const coord = position.join(',');
+        totalSteps++;
 
-        if (!(coord in cells)) cells[coord] = i + 1;
+        if (!(coord in cells)) cells[coord] = totalSteps;
       }
     }
 
@@ -193,6 +195,37 @@ readFile(__dirname + '/input.txt')
   })
   .then(logAndReturn('part 1: '));
 
+{
+  [
+    ['R8,U5,L5,D3', 'U7,R6,D4,L4', 30],
+    [
+      'R75,D30,R83,U83,L12,D49,R71,U7,L72',
+      'U62,R66,U55,R34,D71,R55,D58,R83',
+      610,
+    ],
+    [
+      'R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51',
+      'U98,R91,D20,R16,D67,R40,U7,R15,U6,R7',
+      410,
+    ],
+  ].forEach(([wireA, wireB, expected]) => {
+    const a = Wire(wireA.split(','));
+    const b = Wire(wireB.split(','));
+
+    a.layWire();
+    b.layWire();
+
+    const intersections = a.findIntersections(b);
+    const intersectionStepCount = intersections.map(
+      coord => a.cells[coord] + b.cells[coord]
+    );
+
+    const assertion = Math.min(...intersectionStepCount);
+
+    Assert.deepEqual(expected, assertion);
+  });
+}
+
 readFile(__dirname + '/input.txt')
   .then(([wireA, wireB]) => {
     const a = Wire(wireA.split(','));
@@ -202,19 +235,10 @@ readFile(__dirname + '/input.txt')
     b.layWire();
 
     const intersections = a.findIntersections(b);
-    const intersectionStepCount = intersections.map(int => {
-      return a.cells[int] + b.cells[int];
-    });
+    const intersectionStepCount = intersections.map(
+      coord => a.cells[coord] + b.cells[coord]
+    );
 
     return Math.min(...intersectionStepCount);
-    // const shortestDistance = findShortestIntersection(intersections);
-
-    // return shortestDistance
-    //   .split(',')
-    //   .map(i => parseInt(i, 10))
-    //   .map(i => (i < 0 ? i * -1 : i))
-    //   .reduce((all, curr) => {
-    //     return all + curr;
-    //   }, 0);
   })
   .then(logAndReturn('part 2: '));
