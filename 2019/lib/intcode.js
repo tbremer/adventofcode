@@ -1,6 +1,6 @@
 module.exports = function Intcode(
   prog,
-  debug = () => {} //(...args) => console.log(...args)
+  debug // = (...args) => console.log(...args)
 ) {
   if (!Array.isArray(prog))
     throw new TypeError('Program must be an Array of numbers');
@@ -38,6 +38,7 @@ module.exports = function Intcode(
   this.run = function Intcode$Run() {
     debug && debug('run:', pointer);
     switch (pointer) {
+      // addition
       case 1: {
         debug && debug('opcode 1, adding');
 
@@ -50,6 +51,8 @@ module.exports = function Intcode(
         // continue running program
         return this.run();
       }
+
+      // multiplication
       case 2: {
         debug && debug('opcode 2, multiplying');
 
