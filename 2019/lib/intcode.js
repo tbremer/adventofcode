@@ -62,13 +62,18 @@ module.exports = function Intcode(
         // continue running program
         return this.run();
       }
+
+      // halt
       case 99: {
         debug && debug('opcode 99, halting');
         return this;
       }
+
       default: {
         throw Error(
-          `Unknown opcode:${pointer} at position: ${position} in program:${program}`
+          `Unknown opcode: \`${pointer}\` at position: \`${position}\` in program: ${program.join(
+            ','
+          )}`
         );
       }
     }
