@@ -2,6 +2,6 @@ const {
   promises: { readFile },
 } = require('fs');
 
-module.exports = async function(path, split = true) {
-  return readFile(path, 'utf-8').then(s => (split ? s.split(/\r?\n/) : s));
+module.exports = async function(path, split = /\r?\n/) {
+  return readFile(path, 'utf-8').then(s => s.split(/\r?\n/));
 };

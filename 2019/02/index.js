@@ -44,7 +44,7 @@ Assert.deepEqual(
 );
 console.log('Test Suite Passes!');
 
-readFile(`${__dirname}/input.txt`, false)
+readFile(`${__dirname}/input.txt`, ',')
   .then(input => input.split(',').map(i => parseInt(i, 10)))
   .then(data_array => {
     data_array[1] = 12;
@@ -55,8 +55,8 @@ readFile(`${__dirname}/input.txt`, false)
   .then(logAndReturn('part a:'));
 
 // find noun and verb that add up to 19690720
-readFile(`${__dirname}/input.txt`, false)
-  .then(input => input.split(',').map(i => parseInt(i, 10)))
+readFile(`${__dirname}/input.txt`, ',')
+  .then(input => input.map(i => parseInt(i, 10)))
   .then(program => {
     let a_idx = 0;
     const total = 99;
@@ -72,22 +72,6 @@ readFile(`${__dirname}/input.txt`, false)
           return { noun: a_idx, verb: temp_idx };
         }
       }
-      //   const temp_program_a = [...program];
-      //   const temp_program_b = [...program];
-      //   const noun = idx;
-      //   const verb = 99 - idx;
-
-      //   temp_program_a[1] = noun;
-      //   temp_program_a[2] = verb;
-
-      //   temp_program_b[1] = verb;
-      //   temp_program_b[2] = noun;
-
-      //   console.log(Intcode([...temp_program_a])[0]);
-      //   console.log(Intcode([...temp_program_b])[0]);
-
-      //   if (Intcode(temp_program_a)[0] === 19690720) return { noun, verb };
-      //   if (Intcode(temp_program_b)[0] === 19690720) return { noun, verb };
     }
   })
   .then(({ noun, verb }) => 100 * noun + verb)
