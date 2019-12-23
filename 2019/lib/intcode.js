@@ -1,5 +1,3 @@
-const readline = require('readline');
-
 /*
 INSTRUCTION KEY:
 
@@ -21,6 +19,7 @@ const POSITION = Symbol.for('Mode$$Position');
 
 module.exports = function Intcode(
   prog,
+  inputs = [],
   debug // = (...args) => console.log(...args)
 ) {
   if (!Array.isArray(prog))
@@ -28,8 +27,8 @@ module.exports = function Intcode(
   if (!prog.every(i => typeof i === 'number'))
     throw new TypeError('Program must only container numbers');
 
-  if (!(this instanceof Intcode)) return new Intcode(prog, debug);
-
+  if (!(this instanceof Intcode)) return new Intcode(prog, inputs, debug);
+  
   const program = prog;
   let position = 0;
   // let pointer = program[position];
@@ -121,26 +120,16 @@ module.exports = function Intcode(
         debug && debug('opcode 3, place value at param');
 
         const [storeAt] = peek(1);
+        const value = inputs.shift();
 
-        const rl = readline.createInterface({
-          input: process.stdin,
-          output: process.stdout,
-        });
+        debug && debug('storeAt:', storeAt);
+        debug && debug('value:', value);
 
-        rl.question('Input Value: ', answer => {
-          rl.close();
-          const value = answer;
+        program[storeAt] = Number(value);
 
-          debug && debug('storeAt:', storeAt);
-          debug && debug('value:', value);
+        advance(2);
 
-          program[storeAt] = Number(value);
-
-          advance(2);
-
-          return this.run();
-        });
-        break;
+        return this.run();
       }
 
       // output a value
@@ -245,13 +234,13 @@ module.exports = function Intcode(
       // halt
       case 99: {
         debug && debug('opcode 99, halting');
-        console.log('HALT');
+        // console.log('HALT');
         return this;
       }
 
       default: {
         throw Error(
-          `Unknown opcode: \`${opcode}\` at position: \`${position}\` in program: ${program.join(
+          `Unknown opcode: \`${opcode}\` from instruction: \`${instructions}\` at position: \`${position}\` in program: ${program.join(
             ','
           )}`
         );
