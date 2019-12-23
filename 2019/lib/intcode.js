@@ -28,14 +28,10 @@ module.exports = function Intcode(
     throw new TypeError('Program must only container numbers');
 
   if (!(this instanceof Intcode)) return new Intcode(prog, inputs, debug);
-  
+
   const program = prog;
   let position = 0;
-  // let pointer = program[position];
-
-  function next() {
-    position += 1;
-  }
+  const outputs = [];
 
   function advance(int) {
     position += int;
@@ -120,7 +116,7 @@ module.exports = function Intcode(
         debug && debug('opcode 3, place value at param');
 
         const [storeAt] = peek(1);
-        const value = inputs.shift();
+        const value = inputs.shift() || 0;
 
         debug && debug('storeAt:', storeAt);
         debug && debug('value:', value);
@@ -146,19 +142,9 @@ module.exports = function Intcode(
 
         const outputValue = paramMode === '1' ? readFrom : program[readFrom];
 
-        if (outputValue !== 0) {
-          const [, nextInstruction] = peek(2);
+        debug && debug('Output:', outputValue);
 
-          // if (nextInstruction !== 99)
-          //   throw new Error(
-          //     `Read error occured at position \`${position}\` with previous instructions of: ${program.slice(
-          //       0,
-          //       position
-          //     )}.`
-          //   );
-        }
-
-        console.log('Output:', outputValue);
+        outputs.push(outputValue);
 
         advance(2);
 
@@ -255,5 +241,9 @@ module.exports = function Intcode(
 
   this.get = function Intcode$Get(idx) {
     return program[idx];
+  };
+
+  this.getOutputs = function Intcode$GetOutputs() {
+    return outputs;
   };
 };
