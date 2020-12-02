@@ -72,10 +72,9 @@ fn str_to_pw_vec(string: &str) -> Vec<Password> {
 }
 
 fn main() {
-  let test_input= "1-3 a: abcde
+  let test_pw = str_to_pw_vec("1-3 a: abcde
 1-3 b: cdefg
-2-9 c: ccccccccc";
-  let test_pw = str_to_pw_vec(test_input);
+2-9 c: ccccccccc");
   let input_data = utils::read_file(utils::args().remove(0));
   let input_pw = str_to_pw_vec(&input_data);
 
