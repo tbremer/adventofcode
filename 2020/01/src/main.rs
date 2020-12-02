@@ -44,7 +44,6 @@ fn main() {
             .map(|i| i.to_owned())
             .collect(),
     );
-    // let monkey = (input_data);
     let foo = Permutation::new(input_data.clone());
 
     for (a, b) in foo.clone() {
