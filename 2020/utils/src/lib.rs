@@ -15,7 +15,6 @@ pub fn args() -> Vec<String> {
 }
 
 pub fn read_file(path: String) -> String {
-    println!("path: {}", path);
     let f = File::open(path);
     let mut contents = String::new();
 
