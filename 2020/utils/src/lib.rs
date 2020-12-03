@@ -41,3 +41,7 @@ pub fn iter_to_int(items: Vec<String>) -> Vec<u16> {
 
     new_list
 }
+
+pub fn str_to_vec(str: String) -> Vec<String> {
+    str.split('\n').map(|i| i.to_owned()).collect()
+}
