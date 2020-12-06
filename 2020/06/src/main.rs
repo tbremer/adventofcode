@@ -2,13 +2,6 @@ use std::collections::HashSet;
 use std::iter::FromIterator;
 use utils;
 
-#[derive(Debug)]
-struct Group {
-    count: usize,
-    first: Vec<char>,
-    rest: Vec<Vec<char>>,
-}
-
 fn main() {
     let file = utils::read_file(utils::args().remove(0));
     let input = file.split("\n\n");
