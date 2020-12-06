@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+use std::iter::FromIterator;
 use utils;
 
 #[derive(Debug)]
@@ -13,49 +15,31 @@ fn main() {
 
     let pt1 = input
         .clone()
-        .map(|i| {
-            let mut input: Vec<char> = i.to_owned().replace("\n", "").chars().collect();
-
-            input.sort();
-            input.dedup();
-
-            input.len()
-        })
-        .fold(0, |acc, x| acc + x);
+        .map(|l| HashSet::<char>::from_iter(l.replace("\n", "").chars()))
+        .fold(0, |acc, x| acc + x.len());
 
     println!("pt1: {}", pt1);
 
-    let pt2: Vec<Group> = input
+    let pt2 = input
         .clone()
-        .map(|i| {
-            i.split("\n")
-                .map(|i| i.to_owned().chars().collect::<Vec<char>>())
-                .collect::<Vec<Vec<char>>>()
-        })
-        .map(|mut g| {
-            let first = g.remove(0);
+        .map(|line| count_group(line))
+        .fold(0, |a, b| a + b);
 
-            Group {
-                first,
-                rest: g.to_owned(),
-                count: 0,
-            }
-        })
+    println!("pt2: {}", pt2);
+}
+
+fn count_group(line: &str) -> usize {
+    let all_answ: Vec<HashSet<char>> = line
+        .split("\n")
+        .map(|l| HashSet::from_iter(l.chars()))
         .collect();
 
-    let count = pt2.iter().fold(0, |mut acc, cur| {
-        if cur.rest.len() == 0 {
-            return acc + cur.first.len();
-        }
+    let all_yes = all_answ
+        .iter()
+        .fold(HashSet::new(), |acc, set| acc.union(set).cloned().collect());
 
-        for char in &cur.first {
-            let mut rest = cur.rest.iter();
-            if rest.all(|v| v.contains(char)) {
-                acc += 1;
-            }
-        }
-
-        acc
-    });
-    println!("count: {:?}", count);
+    all_answ
+        .iter()
+        .fold(all_yes, |acc, set| acc.intersection(set).cloned().collect())
+        .len()
 }
