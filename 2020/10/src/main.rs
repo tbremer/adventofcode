@@ -47,7 +47,6 @@ fn main() {
 
     all.sort();
 
-    // println!("pt 2: {:?}", all);
     let mut cache = HashMap::new();
     println!("pt 2: {:?}", count_paths(0, &all, &mut cache));
 }
