@@ -48,10 +48,64 @@ fn main() {
     all.sort();
 
     let mut cache = HashMap::new();
-    println!("pt 2: {:?}", count_paths(0, &all, &mut cache));
+    println!(
+        "pt 2 (recursive): {:?}",
+        count_paths_recursive(0, &all, &mut cache)
+    );
+    println!("pt 2 (josiah): {:?}", count_paths_josiah(&all, max));
 }
 
-fn count_paths(i: usize, list: &Vec<usize>, cache: &mut HashMap<usize, usize>) -> usize {
+fn count_paths_josiah(list: &Vec<usize>, target: usize) -> usize {
+    let mut cache: HashMap<usize, usize> = HashMap::new();
+    let range = std::ops::Range {
+        start: 0,
+        end: list.len() - 1,
+    };
+
+    cache.insert(0, 1);
+
+    for idx in range {
+        let item = list[idx];
+        let lookup = cache.clone();
+
+        if item == 0 {
+            continue;
+        }
+
+        let a = if item > 0 {
+            match lookup.get(&(item - 1)) {
+                None => &0,
+                Some(v) => v,
+            }
+        } else {
+            &0
+        };
+
+        let b = if item > 1 {
+            match lookup.get(&(item - 2)) {
+                None => &0,
+                Some(v) => v,
+            }
+        } else {
+            &0
+        };
+
+        let c = if item > 2 {
+            match lookup.get(&(item - 3)) {
+                None => &0,
+                Some(v) => v,
+            }
+        } else {
+            &0
+        };
+
+        cache.insert(item, a + b + c);
+    }
+
+    std::cmp::max(0, *cache.get(&target).unwrap())
+}
+
+fn count_paths_recursive(i: usize, list: &Vec<usize>, cache: &mut HashMap<usize, usize>) -> usize {
     if i == list.len() - 1 {
         return 1;
     }
@@ -74,7 +128,7 @@ fn count_paths(i: usize, list: &Vec<usize>, cache: &mut HashMap<usize, usize>) -
 
     for idx in range {
         if list[idx] - item <= 3 {
-            count += count_paths(idx, list, cache);
+            count += count_paths_recursive(idx, list, cache);
         }
     }
     cache.insert(item, count);
