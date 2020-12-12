@@ -44,16 +44,16 @@ fn main() {
 
         pt1_map = new_map;
     }
+    println!("pt 1 (occupied tiles): {}", count_occupied_tiles(&pt1_map));
 
     loop {
         // if iterations > 3 {
         //     panic!();
         // }
-        std::thread::sleep(std::time::Duration::from_millis(42));
-        print!("\x1B[2J\x1B[1;1H");
-        print!("^[]1337;ClearScrollback^G");
-        std::thread::sleep(std::time::Duration::from_millis(16));
-        print!("{}", print_map(&pt2_map));
+        // std::thread::sleep(std::time::Duration::from_millis(42));
+        // print!("\x1B[2J\x1B[1;1H");
+        // std::thread::sleep(std::time::Duration::from_millis(16));
+        // print!("{}", print_map(&pt2_map));
 
         let (differences, new_map) = cycle_pt2(pt2_map.clone());
 
@@ -63,7 +63,6 @@ fn main() {
 
         pt2_map = new_map;
     }
-    // println!("pt 1 (occupied tiles): {}", count_occupied_tiles(&pt1_map));
     println!("pt 2 (occupied tiles): {}", count_occupied_tiles(&pt2_map));
 }
 
