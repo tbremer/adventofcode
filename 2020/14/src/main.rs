@@ -91,7 +91,7 @@ struct Comp {
 
 impl Comp {
     fn coalesce_memory(&self) -> usize {
-        self.memory.values().fold(0, |acc, cur| acc + cur)
+        self.memory.values().sum()
     }
 }
 
