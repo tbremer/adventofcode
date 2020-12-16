@@ -16,12 +16,12 @@ fn main() {
 
         acc
     });
-    println!(
-        "pt 1: {:?}",
-        invalid.iter().fold(0usize, |acc, cur| acc + *cur)
-    );
 
-    println!("pt 2: {:?}", valid);
+    assert_eq!(
+        20231,
+        invalid.iter().fold(0usize, |acc, cur| acc + *cur),
+        "part 1 invalid."
+    );
 }
 
 fn parse_nearby(str: &str) -> Vec<usize> {
