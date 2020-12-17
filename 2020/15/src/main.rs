@@ -20,14 +20,12 @@ fn find_number_by_count(num_of_rounds: usize, initializer: &Vec<usize>) -> usize
     let mut prev_number_spoken = usize::MAX;
 
     for item in initializer {
-        match map.get(item) {
-            None => {
-                map.insert(item.clone(), (usize::MAX, round_number));
-            }
-            Some(tuple) => {
-                map.insert(item.clone(), (tuple.1, round_number));
-            }
-        }
+        let p = match map.get(item) {
+            None => (usize::MAX, round_number),
+            Some(tuple) => (tuple.1, round_number),
+        };
+
+        map.insert(item.clone(), p);
 
         prev_number_spoken = item.clone();
         round_number += 1;
