@@ -4,7 +4,7 @@ fn main() {
     let mut walker = Walker::new(sections.remove(0));
     let valid_ranges = walker.extract_ranges();
     let nearby = parse_nearby(sections.remove(1));
-    let (valid, invalid) = nearby.iter().fold((vec![], vec![]), |mut acc, ticket| {
+    let (_valid, invalid) = nearby.iter().fold((vec![], vec![]), |mut acc, ticket| {
         if valid_ranges
             .iter()
             .any(|(min, max)| ticket >= &min && ticket <= &max)
@@ -33,9 +33,9 @@ fn parse_nearby(str: &str) -> Vec<usize> {
 
 #[derive(Debug)]
 struct Walker<'a, 'b> {
-    value: &'a str,  // the source
-    bytes: &'b [u8], // the source as byte array
-    len: usize,
+    value: &'a str,   // the source
+    bytes: &'b [u8],  // the source as byte array
+    len: usize,       // length of input
     pos: usize,       // position in source -- equates to char
     next: usize,      // next item, for peeking
     char: Option<u8>, // current character
