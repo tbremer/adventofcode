@@ -1,23 +1,11 @@
 fn main() {
     let file = utils::read_file(utils::args().remove(0));
 
-    let v = file
+    let pt1 = file
         .lines()
         .fold(0, |acc, cur| acc + parse_line(cur.to_string()));
 
-    println!("v: {}", v);
-
-    // for ch in file.chars() {
-    //     match ch {
-    //         '(' => println!("handle group"),
-    //         ')' => println!("rparen, should never see this"),
-    //         '0'..='9' => println!("a number!"),
-    //         '+' => println!("addition"),
-    //         '*' => println!("multiplication"),
-    //         ' ' | '\n' | '\r' | '\t' => (),
-    //         _ => panic!("Unkown character: {}", ch),
-    //     }
-    // }
+    println!("pt 1: {}", pt1);
 }
 #[derive(Debug)]
 enum Operation {
@@ -26,7 +14,6 @@ enum Operation {
 }
 
 fn parse_line(line: String) -> usize {
-    println!("parsing: {}", line);
     let chars: Vec<char> = line.replace(' ', "").chars().collect();
     let len = chars.len();
     let mut idx = 0;
