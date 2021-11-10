@@ -1,7 +1,9 @@
 use core::panic;
 use std::env;
+use std::fmt::Display;
 use std::fs::File;
 use std::io::prelude::Read;
+use std::str::FromStr;
 
 pub fn args() -> Vec<String> {
     let mut arguments: Vec<String> = env::args_os()
@@ -29,11 +31,15 @@ pub fn read_file(path: String) -> String {
     contents.trim().to_owned()
 }
 
-pub fn iter_to_int(items: Vec<String>) -> Vec<u16> {
+pub fn iter_to_int<T>(items: Vec<String>) -> Vec<T>
+where
+    T: FromStr,
+    <T as FromStr>::Err: Display,
+{
     let mut new_list = vec![];
 
     for item in items {
-        match item.parse::<u16>() {
+        match item.parse::<T>() {
             Ok(v) => new_list.push(v),
             Err(e) => panic!("{}", &e.to_string()),
         };
