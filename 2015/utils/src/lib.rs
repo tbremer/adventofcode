@@ -48,6 +48,8 @@ where
     new_list
 }
 
-pub fn str_to_vec(str: String) -> Vec<String> {
-    str.split('\n').map(|i| i.to_owned()).collect()
+pub fn str_to_vec(str: &str, needle: Option<&str>) -> Vec<String> {
+    str.split(needle.unwrap_or("\n"))
+        .map(|i| i.to_owned())
+        .collect()
 }
