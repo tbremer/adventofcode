@@ -1,5 +1,4 @@
 use md5;
-// use utils;
 
 fn main() {
     println!("Welcome to day-4 — Running test suite first!");
