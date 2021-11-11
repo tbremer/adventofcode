@@ -1,9 +1,13 @@
 #!/usr/bin/env fish
 cargo new --name "day-$argv[1]" "./$argv[1]"
 
+// Insert utils as dependency
+echo "utils = { path = '../utils' }" >> "./$argv[1]/Cargo.toml"
+
+// dump base script
 echo >"./$argv[1]/src/main.rs" "\
 fn main() {
-    println!(\"Welcome to day-4 — Running test suite first!\");
+    println!(\"Welcome to day-$argv[1] — Running test suite first!\");
     test_1();
     // test_2();
 
@@ -18,7 +22,11 @@ fn main() {
 fn pt_1(input: &str) -> () {}
 fn pt_2(input: &str) -> () {}
 
-fn test_1() {}
-fn test_2() {}
+fn test_1() {
+    println!(\"Suite 1 passes\");
+}
+fn test_2() {
+    println!(\"Suite 2 passes\");
+}
 "
 
