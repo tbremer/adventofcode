@@ -1,0 +1,2 @@
+#!/usr/bin/env fish
+cargo new --name "day-$argv[1]" "./$argv[1]"
