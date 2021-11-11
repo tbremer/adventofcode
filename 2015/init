@@ -1,2 +1,24 @@
 #!/usr/bin/env fish
 cargo new --name "day-$argv[1]" "./$argv[1]"
+
+echo >"./$argv[1]/src/main.rs" "\
+fn main() {
+    println!(\"Welcome to day-4 — Running test suite first!\");
+    test_1();
+    // test_2();
+
+    println!(\"Test suite complete, solving puzzle…\");
+
+    // let input_data = \"\";
+
+    // println!(\"Puzzle 1: {:?}\", pt_1(&input_data));
+    // println!(\"Puzzle 2: {:?}\", pt_2(&input_data));
+}
+
+fn pt_1(input: &str) -> () {}
+fn pt_2(input: &str) -> () {}
+
+fn test_1() {}
+fn test_2() {}
+"
+
