@@ -46,7 +46,7 @@ impl Present {
 }
 
 fn main() {
-    println!("Welcome to day-1, running test suite first!");
+    println!("Welcome to day-2, running test suite first!");
     test_1();
     test_2();
 
@@ -56,7 +56,6 @@ fn main() {
 
     println!("Wrapping Paper: {:?}", pt_1(&input_data));
     println!("Ribbon: {:?}", pt_2(&input_data));
-    // println!("Position when negative: {:?}", pt_2(&input_data))
 }
 
 fn pt_1a(dimensions: &str) -> u32 {
