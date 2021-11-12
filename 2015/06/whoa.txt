@@ -1,0 +1,2 @@
+Welcome to day-06!
+Puzzle 1: 400410
