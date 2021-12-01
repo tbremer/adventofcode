@@ -12,51 +12,82 @@ fn main() {
 }
 
 fn pt_1(input: &str) -> usize {
-    let mut lines = input.lines().map(|i| {i.parse::<usize>().unwrap()});
-    let mut prev = lines.next().unwrap();
-    let mut larger_count = 0;
+    let iter: Vec<usize> = input.lines().map(|i| i.parse::<usize>().unwrap()).collect();
+    let window = iter.windows(2);
 
-    for line in lines {
-        let l = line;
-        if l > prev {
-            larger_count+=1
+    window.fold(0, |acc, cur| {
+        if cur[0] < cur[1] {
+            return acc + 1;
         }
 
-        prev = l;
-    }
+        acc
+    })
 
-    larger_count
+    // Previous solution before using `windows`
+    // let mut lines = input.lines().map(|i| {i.parse::<usize>().unwrap()});
+    // let mut prev = lines.next().unwrap();
+    // let mut larger_count = 0;
+
+    // for line in lines {
+    //     let l = line;
+    //     if l > prev {
+    //         larger_count+=1
+    //     }
+
+    //     prev = l;
+    // }
+
+    // larger_count
 }
 
-fn pt_2(input: &str) -> usize{
-    let lines: Vec<usize> = input.lines().map(|i| {i.parse::<usize>().unwrap()}).collect();
-    let mut prev = lines[0] + lines[1] + lines[2];
-    let mut larger_count = 0;
+fn pt_2(input: &str) -> usize {
+    let iter: Vec<usize> = input.lines().map(|i| i.parse::<usize>().unwrap()).collect();
+    let window = iter.windows(3);
+    let mut prev: Option<usize> = None;
 
-    for (idx, v) in lines.iter().enumerate() {
-        if idx == 0 {
-            continue;
+    window.fold(0, |mut acc, cur| {
+        let next = cur[0] + cur[1] + cur[2];
+        if let Some(p) = prev {
+            if p < next {
+                acc += 1;
+            }
         }
 
-        if lines.len() - 1 < idx + 2 {
-            break;
-        }
+        prev = Some(cur[0] + cur[1] + cur[2]);
 
-        let next = v + lines[idx+1] + lines[idx+2];
+        acc
+    })
 
-        if prev < next {
-            larger_count += 1;
-        }
+    // previous solution before using `windows`
+    // let lines: Vec<usize> = input.lines().map(|i| i.parse::<usize>().unwrap()).collect();
+    // let mut prev = lines[0] + lines[1] + lines[2];
+    // let mut larger_count = 0;
 
-        prev = next;
-    }
+    // for (idx, v) in lines.iter().enumerate() {
+    //     if idx == 0 {
+    //         continue;
+    //     }
 
+    //     if lines.len() - 1 < idx + 2 {
+    //         break;
+    //     }
 
-    larger_count
+    //     let next = v + lines[idx+1] + lines[idx+2];
+
+    //     if prev < next {
+    //         larger_count += 1;
+    //     }
+
+    //     prev = next;
+    // }
+
+    // larger_count
 }
 
 fn test_1() {
-    assert_eq!(pt_1("199
+    assert_eq!(
+        pt_1(
+            "199
 200
 208
 210
@@ -65,12 +96,17 @@ fn test_1() {
 240
 269
 260
-263"), 7);
+263"
+        ),
+        7
+    );
     println!("Suite 1 passes");
 }
 
 fn test_2() {
-    assert_eq!(pt_2("199
+    assert_eq!(
+        pt_2(
+            "199
 200
 208
 210
@@ -79,7 +115,9 @@ fn test_2() {
 240
 269
 260
-263"), 5);
-   println!("Suite 2 passes");
+263"
+        ),
+        5
+    );
+    println!("Suite 2 passes");
 }
-
