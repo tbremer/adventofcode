@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+python3 -m timeit "__import__('subprocess').run(['$argv[1]', '$argv[2]'])"
