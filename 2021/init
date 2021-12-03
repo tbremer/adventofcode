@@ -13,7 +13,7 @@ fn main() {
 
     println!(\"Test suite complete, solving puzzle…\");
 
-    // let input_data = \"\";
+    // let input_data = utils::read_file(utils::args().remove(0));
 
     // println!(\"Puzzle 1: {:?}\", pt_1(&input_data));
     // println!(\"Puzzle 2: {:?}\", pt_2(&input_data));
