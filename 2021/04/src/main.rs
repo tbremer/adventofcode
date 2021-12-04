@@ -50,7 +50,7 @@ fn pt_1(input: &str) -> usize {
             }
 
             if check_board(&b) {
-                return solve_pt1(draw, b);
+                return solve(draw, b);
             }
 
             map.insert(m_idx, b);
@@ -93,7 +93,7 @@ fn pt_2(input: &str) -> usize {
             if check_board(&b) {
                 if map_len == 1 {
                     // println!("TWO {:?}", b);
-                    return solve_pt1(draw, b);
+                    return solve(draw, b);
                 } else {
                     map.remove(m_idx);
                 }
@@ -214,7 +214,7 @@ fn check_board(b: &Board) -> bool {
     false
 }
 
-fn solve_pt1(draw: usize, board: Board) -> usize {
+fn solve(draw: usize, board: Board) -> usize {
     draw * board.iter().flatten().fold(0, |mut acc, cur| {
         if let Mark::Open(x) = cur {
             acc += x
