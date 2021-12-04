@@ -1,3 +1,5 @@
 #!/usr/bin/env fish
 
-python3 -m timeit "__import__('subprocess').run(['$argv[1]', '$argv[2]'])"
+python3 -m timeit -n 10 "__import__('subprocess').run(['$argv[1]/target/release/day-$argv[1]', '$argv[1]/input'])"
+
+# 02/target/release/day-02 02/input
