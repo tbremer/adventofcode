@@ -37,8 +37,10 @@ fn run(input: &str, days: u16) -> usize {
 
     for _ in 0..days {
         let mut swap = mem();
+
         for key in 0..=8 {
             let val = lanternfish.get(&key).unwrap();
+
             if key == 0 {
                 swap.insert(8, *val);
                 swap.insert(6, *val);
@@ -52,6 +54,7 @@ fn run(input: &str, days: u16) -> usize {
             }
 
             let next_key = key - 1;
+
             swap.insert(next_key, *val);
         }
 
@@ -68,6 +71,3 @@ fn test_1() {
     assert_eq!(run("3,4,3,1,2", 80), 5934);
     println!("Suite 1 passes");
 }
-//fn test_2() {
-//    println!("Suite 2 passes");
-//}
