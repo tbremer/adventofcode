@@ -115,8 +115,6 @@ fn pt_2(input: &str) -> usize {
     }
 
     count.iter().fold(0, |acc, cur| acc + cur)
-
-    // count.len()
 }
 
 fn find_by_length(needle: &str, len: usize) -> &str {
