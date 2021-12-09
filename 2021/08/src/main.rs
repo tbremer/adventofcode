@@ -45,6 +45,7 @@ fn pt_2(input: &str) -> usize {
         let left = sp[0];
         let right = sp[1];
 
+        // populate vector with known shapes
         let mut sets = vec![
             None,
             Some(into_set(find_by_length(left, 2))),
@@ -57,6 +58,8 @@ fn pt_2(input: &str) -> usize {
             Some(into_set(find_by_length(left, 7))),
             None,
         ];
+
+        // l_shape is the difference of 4 & 1
         let l_shape: HashSet<&str> = sets[4]
             .clone()
             .unwrap()
@@ -64,6 +67,8 @@ fn pt_2(input: &str) -> usize {
             .map(|i| *i)
             .collect();
 
+        // parse into known numbers using the difference of 1 & 4 and length of
+        // string
         for l_item in left.split_whitespace() {
             let len = l_item.len();
 
@@ -76,20 +81,26 @@ fn pt_2(input: &str) -> usize {
             if len == 6 {
                 if l_shape.is_subset(&as_set) {
                     if sets[1].clone().unwrap().is_subset(&as_set) {
+                        // 9 holds both L and 1 in it's shape
                         sets[9] = Some(as_set)
                     } else {
+                        // 6 only holds L
                         sets[6] = Some(as_set)
                     }
                 } else {
+                    // 0 does not hold L in it's shape
                     sets[0] = Some(as_set)
                 }
             } else if len == 5 {
                 if l_shape.is_subset(&as_set) {
+                    // 5 holds L in it's shape
                     sets[5] = Some(as_set);
                 } else {
                     if sets[1].clone().unwrap().is_subset(&as_set) {
+                        // 3 holds 1 in it's shape
                         sets[3] = Some(as_set);
                     } else {
+                        // 2 does not hold 1 in it's shape
                         sets[2] = Some(as_set);
                     }
                 }
@@ -111,6 +122,7 @@ fn pt_2(input: &str) -> usize {
         }
 
         let str: String = inner_count.iter().map(|s| String::from(s)).collect();
+
         count.push(str.parse::<usize>().unwrap());
     }
 
