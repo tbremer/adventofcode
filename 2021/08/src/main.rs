@@ -67,8 +67,7 @@ fn pt_2(input: &str) -> usize {
             .map(|i| *i)
             .collect();
 
-        // parse into known numbers using the difference of 1 & 4 and length of
-        // string
+        // parse into known numbers using the l_shape and length of item
         for l_item in left.split_whitespace() {
             let len = l_item.len();
 
