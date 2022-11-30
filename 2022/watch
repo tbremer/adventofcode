@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+cargo-watch -C "$argv[1]" -c -x 'run -- input'
