@@ -24,6 +24,7 @@ fn pt_1(input: &str) -> i32 {
         .max()
         .unwrap()
 }
+
 fn pt_2(input: &str) -> i32 {
     let mut v: Vec<i32> = input
         .split("\n\n")
