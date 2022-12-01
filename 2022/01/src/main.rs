@@ -29,24 +29,10 @@ fn pt_2(input: &str) -> i32 {
         .split("\n\n")
         .map(|cur| cur.split("\n").map(|i| i.parse::<i32>().unwrap()).sum())
         .collect();
-    let mut top_3 = vec![];
 
-    let max1 = max(&v);
-    let idx1 = &v.iter().position(|i| i == &max1).unwrap();
-    v.remove(*idx1);
-    top_3.push(max1);
+    v.sort();
 
-    let max2 = max(&v);
-    let idx2 = &v.iter().position(|i| i == &max2).unwrap();
-    v.remove(*idx2);
-    top_3.push(max2);
-
-    let max3 = max(&v);
-    let idx3 = &v.iter().position(|i| i == &max3).unwrap();
-    v.remove(*idx3);
-    top_3.push(max3);
-
-    top_3.iter().sum()
+    v[v.len() - 3..].iter().sum()
 }
 
 fn test_1() {
@@ -93,8 +79,4 @@ fn test_2() {
         ),
         45_000
     );
-}
-
-fn max(v: &Vec<i32>) -> i32 {
-    v.iter().max().unwrap().to_owned()
 }
