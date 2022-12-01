@@ -1,0 +1,12 @@
+#!/usr/bin/env fish
+
+set iters 10
+
+if test -n "$argv[2]"
+    set iters "$argv[2]";
+end
+
+
+python3 -m timeit -n "$iters" "__import__('subprocess').run(['$argv[1]/target/release/day-$argv[1]', '$argv[1]/input'])"
+
+set -e iters
