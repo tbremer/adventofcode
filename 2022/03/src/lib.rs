@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 
 pub fn str_val(str: &str) -> u32 {
-    let b = str.as_bytes()[0];
+    let b = str.as_bytes().get(0).unwrap();
 
-    if b > 96 {
+    if b > &96 {
         (b - 96).into()
     } else {
         (b - 38).into()
