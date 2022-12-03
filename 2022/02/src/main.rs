@@ -18,73 +18,85 @@ enum Throws {
     Scissors,
 }
 
+impl Throws {
+    pub fn play_score(&self) -> i32 {
+        match self {
+            Throws::Rock => 1,
+            Throws::Paper => 2,
+            Throws::Scissors => 3,
+        }
+    }
+
+    pub fn oppose(&self, opponent: &Self) -> i32 {
+        if self == opponent {
+            3
+        } else if self == &Throws::Rock && opponent == &Throws::Scissors
+            || self == &Throws::Scissors && opponent == &Throws::Paper
+            || self == &Throws::Paper && opponent == &Throws::Rock
+        {
+            6
+        } else {
+            0
+        }
+    }
+
+    pub fn predict(&self, hand: &&str) -> Self {
+        match hand {
+            // Draw
+            &"Y" => self.clone(),
+            // Lose
+            &"X" => match self {
+                Throws::Rock => Throws::Scissors,
+                Throws::Paper => Throws::Rock,
+                Throws::Scissors => Throws::Paper,
+            },
+            // win
+            &"Z" => match self {
+                Throws::Rock => Throws::Paper,
+                Throws::Paper => Throws::Scissors,
+                Throws::Scissors => Throws::Rock,
+            },
+            c => panic!("Unknown char: {}", c),
+        }
+    }
+}
+
 fn pt_1(input: &str) -> i32 {
-    input.split("\n").fold(0, |acc, round| {
-        let mut total = 0;
-        let mut c = round.chars();
+    input.lines().fold(0, |mut acc, round| {
+        let r = round.split(' ').collect::<Vec<&str>>();
+        let c = r.chunks(2);
 
-        loop {
-            let them = match c.nth(0) {
-                Some(t) => parse_throw(t),
-                None => break,
-            };
-            let me = match c.nth(1) {
-                Some(m) => parse_throw(m),
-                None => panic!("Broke, but got them: {:?}", them),
-            };
-
-            c.next();
-
-            total += play_score(&me);
-
-            if them == me {
-                total += 3
-            }
-            // i win
-            else if me == Throws::Rock && them == Throws::Scissors
-                || me == Throws::Scissors && them == Throws::Paper
-                || me == Throws::Paper && them == Throws::Rock
+        for slice in c.into_iter() {
+            if slice.get(1) == Some(&"A")
+                || slice.get(1) == Some(&"B")
+                || slice.get(1) == Some(&"C")
             {
-                total += 6;
+                continue;
             }
+
+            let t = parse_throw(slice.get(0).unwrap());
+            let m = parse_throw(slice.get(1).unwrap());
+
+            acc += m.play_score() + m.oppose(&t);
         }
 
-        acc + total
+        acc
     })
 }
 
 fn pt_2(input: &str) -> i32 {
-    input.split("\n").fold(0, |acc, round| {
-        let mut total = 0;
-        let mut c = round.chars();
+    input.split("\n").fold(0, |mut acc, round| {
+        let r = round.split(' ').collect::<Vec<&str>>();
+        let c = r.chunks(2);
 
-        loop {
-            let them = match c.nth(0) {
-                Some(t) => parse_throw(t),
-                None => break,
-            };
-            let me = match c.nth(1) {
-                Some(m) => parse_known_throw(&them, m), // get_throw(m),
-                None => panic!("Broke, but got them: {:?}", them),
-            };
+        for slice in c.into_iter() {
+            let t = parse_throw(slice.get(0).unwrap());
+            let m = t.predict(slice.get(1).unwrap());
 
-            c.next();
-
-            total += play_score(&me);
-
-            if them == me {
-                total += 3
-            }
-            // i win
-            else if me == Throws::Rock && them == Throws::Scissors
-                || me == Throws::Scissors && them == Throws::Paper
-                || me == Throws::Paper && them == Throws::Rock
-            {
-                total += 6;
-            }
+            acc += m.play_score() + m.oppose(&t);
         }
 
-        acc + total
+        acc
     })
 }
 
@@ -112,39 +124,11 @@ C Z"
     println!("Suite 2 passes");
 }
 
-fn parse_throw(t: char) -> Throws {
+fn parse_throw(t: &&str) -> Throws {
     match t {
-        'A' | 'X' => Throws::Rock,
-        'B' | 'Y' => Throws::Paper,
-        'C' | 'Z' => Throws::Scissors,
+        &"A" | &"X" => Throws::Rock,
+        &"B" | &"Y" => Throws::Paper,
+        &"C" | &"Z" => Throws::Scissors,
         th => panic!("Unknown throw: {}", th),
-    }
-}
-
-fn parse_known_throw(them: &Throws, m: char) -> Throws {
-    match m {
-        // Draw
-        'Y' => them.clone(),
-        // Lose
-        'X' => match them {
-            Throws::Rock => Throws::Scissors,
-            Throws::Paper => Throws::Rock,
-            Throws::Scissors => Throws::Paper,
-        },
-        // win
-        'Z' => match them {
-            Throws::Rock => Throws::Paper,
-            Throws::Paper => Throws::Scissors,
-            Throws::Scissors => Throws::Rock,
-        },
-        c => panic!("Unknown char: {}", c),
-    }
-}
-
-fn play_score(throw: &Throws) -> i32 {
-    match throw {
-        Throws::Rock => 1,
-        Throws::Paper => 2,
-        Throws::Scissors => 3,
     }
 }
