@@ -1,3 +1,5 @@
+use std::vec::IntoIter;
+
 fn main() {
     println!("Welcome to day-02 — Running test suite first!");
     test_1();
@@ -19,6 +21,15 @@ enum Throws {
 }
 
 impl Throws {
+    pub fn from_string(input: &str) -> Self {
+        match input {
+            "A" | "X" => Throws::Rock,
+            "B" | "Y" => Throws::Paper,
+            "C" | "Z" => Throws::Scissors,
+            th => panic!("Unknown input throw: {}", th),
+        }
+    }
+
     pub fn play_score(&self) -> i32 {
         match self {
             Throws::Rock => 1,
@@ -40,18 +51,18 @@ impl Throws {
         }
     }
 
-    pub fn predict(&self, hand: &&str) -> Self {
+    pub fn predict(&self, hand: &str) -> Self {
         match hand {
             // Draw
-            &"Y" => self.clone(),
+            "Y" => self.clone(),
             // Lose
-            &"X" => match self {
+            "X" => match self {
                 Throws::Rock => Throws::Scissors,
                 Throws::Paper => Throws::Rock,
                 Throws::Scissors => Throws::Paper,
             },
             // win
-            &"Z" => match self {
+            "Z" => match self {
                 Throws::Rock => Throws::Paper,
                 Throws::Paper => Throws::Scissors,
                 Throws::Scissors => Throws::Rock,
@@ -62,41 +73,24 @@ impl Throws {
 }
 
 fn pt_1(input: &str) -> i32 {
-    input.lines().fold(0, |mut acc, round| {
-        let r = round.split(' ').collect::<Vec<&str>>();
-        let c = r.chunks(2);
+    let pairs = parse_input(input.clone());
 
-        for slice in c.into_iter() {
-            if slice.get(1) == Some(&"A")
-                || slice.get(1) == Some(&"B")
-                || slice.get(1) == Some(&"C")
-            {
-                continue;
-            }
+    pairs.fold(0, |acc, cur| {
+        let t = Throws::from_string(cur.get(0).unwrap());
+        let m = Throws::from_string(cur.get(1).unwrap());
 
-            let t = parse_throw(slice.get(0).unwrap());
-            let m = parse_throw(slice.get(1).unwrap());
-
-            acc += m.play_score() + m.oppose(&t);
-        }
-
-        acc
+        acc + m.play_score() + m.oppose(&t)
     })
 }
 
 fn pt_2(input: &str) -> i32 {
-    input.split("\n").fold(0, |mut acc, round| {
-        let r = round.split(' ').collect::<Vec<&str>>();
-        let c = r.chunks(2);
+    let pairs = parse_input(input.clone());
 
-        for slice in c.into_iter() {
-            let t = parse_throw(slice.get(0).unwrap());
-            let m = t.predict(slice.get(1).unwrap());
+    pairs.fold(0, |acc, cur| {
+        let t = Throws::from_string(cur.get(0).unwrap());
+        let m = t.predict(cur.get(1).unwrap());
 
-            acc += m.play_score() + m.oppose(&t);
-        }
-
-        acc
+        acc + m.play_score() + m.oppose(&t)
     })
 }
 
@@ -124,11 +118,15 @@ C Z"
     println!("Suite 2 passes");
 }
 
-fn parse_throw(t: &&str) -> Throws {
-    match t {
-        &"A" | &"X" => Throws::Rock,
-        &"B" | &"Y" => Throws::Paper,
-        &"C" | &"Z" => Throws::Scissors,
-        th => panic!("Unknown throw: {}", th),
-    }
+fn parse_input(i: &str) -> IntoIter<Vec<String>> {
+    i.lines()
+        .map(|line| {
+            let v: Vec<String> = line.split(" ").map(|i| i.to_string()).collect();
+            let chunks = v.chunks(2).map(|i| i.to_owned());
+
+            chunks.collect::<Vec<_>>()
+        })
+        .flatten()
+        .collect::<Vec<Vec<String>>>()
+        .into_iter()
 }
