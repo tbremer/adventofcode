@@ -1,3 +1,4 @@
+use std::vec::IntoIter;
 fn main() {
     println!("Welcome to day-02 — Running test suite first!");
     test_1();
@@ -116,7 +117,7 @@ C Z"
     println!("Suite 2 passes");
 }
 
-fn parse_input(i: &str) -> std::vec::IntoIter<Vec<String>> {
+fn parse_input(i: &str) -> IntoIter<Vec<String>> {
     i.lines()
         .flat_map(|line| {
             let v: Vec<String> = line.split(" ").map(|i| i.to_string()).collect();
