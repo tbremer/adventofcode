@@ -30,7 +30,7 @@ impl Throws {
         }
     }
 
-    pub fn play_score(&self) -> i32 {
+    fn play_score(&self) -> i32 {
         match self {
             Throws::Rock => 1,
             Throws::Paper => 2,
@@ -38,7 +38,7 @@ impl Throws {
         }
     }
 
-    pub fn oppose(&self, opponent: &Self) -> i32 {
+    fn oppose(&self, opponent: &Self) -> i32 {
         if self == opponent {
             3
         } else if self == &Throws::Rock && opponent == &Throws::Scissors
@@ -51,7 +51,7 @@ impl Throws {
         }
     }
 
-    pub fn predict(&self, hand: &str) -> Self {
+    fn predict(&self, hand: &str) -> Self {
         match hand {
             // Draw
             "Y" => self.clone(),
