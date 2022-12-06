@@ -16,7 +16,8 @@ pub fn args() -> Vec<String> {
     arguments.split_off(1)
 }
 
-pub fn read_file(path: String) -> String {
+pub fn read_file(path: String, trim: Option<bool>) -> String {
+    let should_trim = trim.unwrap_or(true);
     let f = File::open(path);
     let mut contents = String::new();
 
@@ -28,7 +29,11 @@ pub fn read_file(path: String) -> String {
         Err(e) => panic!("{}", &e.to_string()),
     }
 
-    contents.trim().to_owned()
+    if should_trim {
+        contents.trim().to_owned()
+    } else {
+        contents.to_owned()
+    }
 }
 
 pub fn iter_to_int<T>(items: Vec<String>) -> Vec<T>
