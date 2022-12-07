@@ -9,7 +9,7 @@ fn main() {
     println!("Puzzle 1: {:?}", pt_1(&input_data));
 
     test_2();
-    // println!("Puzzle 2: {:?}", pt_2(&input_data));
+    println!("Puzzle 2: {:?}", pt_2(&input_data));
 }
 
 fn pt_1(input: &str) -> String {
@@ -42,21 +42,15 @@ fn pt_2(input: &str) -> String {
         let mut st = vec![];
 
         for _ in 0..mvmnt.count {
-            println!("{:?}", from_stack);
             st.push(from_stack.nth(0).unwrap());
         }
 
-        to_stack.append(&mut st);
+        st.append(&mut to_stack);
 
         let new_from: Vec<String> = from_stack.collect();
 
-        // println!("new_from: {:?}", new_from);
-
-        input.diagram.insert(mvmnt.to, to_stack);
+        input.diagram.insert(mvmnt.to, st);
         input.diagram.insert(mvmnt.from, new_from);
-
-        println!("");
-        println!("");
     });
 
     diagram_to_string(&input.diagram)
