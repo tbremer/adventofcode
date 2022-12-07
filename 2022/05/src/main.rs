@@ -2,22 +2,18 @@ use std::collections::HashMap;
 
 fn main() {
     println!("Welcome to day-05 — Running test suite first!");
-    test_1();
-    // test_2();
-
-    println!("Test suite complete, solving puzzle…");
 
     let input_data = utils::read_file(utils::args().remove(0), Some(false));
-    println!("{:?}", input_data);
 
+    test_1();
     println!("Puzzle 1: {:?}", pt_1(&input_data));
+
+    test_2();
     // println!("Puzzle 2: {:?}", pt_2(&input_data));
 }
 
 fn pt_1(input: &str) -> String {
-    let mut iter = 0;
     let mut input = parse_input(input);
-    let mut output: HashMap<usize, String> = HashMap::new();
 
     input.movements.iter().for_each(|mvmnt| {
         let mut from_stack = input.diagram.get(&mvmnt.from).unwrap().clone();
@@ -29,38 +25,42 @@ fn pt_1(input: &str) -> String {
             to_stack.insert(0, item);
         }
 
-        input.diagram.remove(&mvmnt.to);
         input.diagram.insert(mvmnt.to, to_stack);
-        input.diagram.remove(&mvmnt.from);
         input.diagram.insert(mvmnt.from, from_stack);
-
-        iter += 1;
     });
 
-    for key in input.diagram.keys() {
-        let stack = input.diagram.get(&key).unwrap();
-
-        match stack.first() {
-            None => (),
-            Some(l) => {
-                output.insert(*key, l.clone());
-            }
-        }
-    }
-
-    let mut k = output.keys().collect::<Vec<&usize>>();
-
-    k.sort();
-
-    k.iter().fold(String::new(), |acc, cur| {
-        let letter = output.get(cur).unwrap();
-
-        acc + letter
-    })
-
-    // "".to_string()
+    diagram_to_string(&input.diagram)
 }
-//fn pt_2(_input: &str) -> () {}
+
+fn pt_2(input: &str) -> String {
+    let mut input = parse_input(input);
+
+    input.movements.iter().for_each(|mvmnt| {
+        let from = input.diagram.get(&mvmnt.from).unwrap().clone();
+        let mut from_stack = from.iter().map(|i| i.to_owned());
+        let mut to_stack = input.diagram.get(&mvmnt.to).unwrap().clone();
+        let mut st = vec![];
+
+        for _ in 0..mvmnt.count {
+            println!("{:?}", from_stack);
+            st.push(from_stack.nth(0).unwrap());
+        }
+
+        to_stack.append(&mut st);
+
+        let new_from: Vec<String> = from_stack.collect();
+
+        // println!("new_from: {:?}", new_from);
+
+        input.diagram.insert(mvmnt.to, to_stack);
+        input.diagram.insert(mvmnt.from, new_from);
+
+        println!("");
+        println!("");
+    });
+
+    diagram_to_string(&input.diagram)
+}
 
 fn test_1() {
     assert_eq!(
@@ -79,9 +79,24 @@ move 1 from 1 to 2"
     );
     println!("Suite 1 passes");
 }
-//fn test_2() {
-//    println!("Suite 2 passes");
-//}
+
+fn test_2() {
+    assert_eq!(
+        pt_2(
+            "    [D]    
+[N] [C]    
+[Z] [M] [P]
+    1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2"
+        ),
+        String::from("MCD")
+    );
+    println!("Suite 2 passes");
+}
 
 #[derive(Debug)]
 struct Moves {
@@ -90,9 +105,11 @@ struct Moves {
     to: usize,
 }
 
+type Diagram = HashMap<usize, Vec<String>>;
+
 #[derive(Debug)]
 struct Input {
-    diagram: HashMap<usize, Vec<String>>,
+    diagram: Diagram,
     movements: Vec<Moves>,
 }
 
@@ -160,4 +177,29 @@ fn parse_movements(input: Vec<&str>) -> Vec<Moves> {
             }
         })
         .collect()
+}
+
+fn diagram_to_string(d: &Diagram) -> String {
+    let mut output: HashMap<usize, String> = HashMap::new();
+
+    for key in d.keys() {
+        let stack = d.get(&key).unwrap();
+
+        match stack.first() {
+            None => (),
+            Some(l) => {
+                output.insert(*key, l.clone());
+            }
+        }
+    }
+
+    let mut k = output.keys().collect::<Vec<&usize>>();
+
+    k.sort();
+
+    k.iter().fold(String::new(), |acc, cur| {
+        let letter = output.get(cur).unwrap();
+
+        acc + letter
+    })
 }
