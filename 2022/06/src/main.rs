@@ -18,7 +18,7 @@ fn solve(input: &str, base: usize) -> usize {
         let set: HashSet<String> = win
             .iter()
             .filter(|i| i.len() > 0)
-            .map(|i| i.clone().to_owned())
+            .map(|i| i.to_string())
             .collect();
 
         if set.len() == base {
