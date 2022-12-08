@@ -17,6 +17,31 @@ pub struct File {
     files: Vec<usize>,
 }
 
+impl File {
+    pub fn new(
+        name: String,
+        idx: usize,
+        parent_idx: &usize,
+        size: usize,
+        is: FileType,
+        fs: &Vec<File>,
+    ) -> Self {
+        let parent = fs.get(*parent_idx).unwrap();
+        let mut path = parent.path.clone();
+        path.push_str(&name);
+
+        File {
+            idx,
+            path,
+            is,
+            name,
+            size,
+            parent: Some(*parent_idx),
+            files: vec![],
+        }
+    }
+}
+
 pub fn parse(input: &str) -> Vec<File> {
     let mut lines = input.lines();
     let mut cur_parent: usize = 0;
@@ -61,21 +86,9 @@ pub fn parse(input: &str) -> Vec<File> {
         } else if line.starts_with("dir") {
             let dir_name = last_word(line);
             let idx = fs.len();
-            let parent = fs.get(cur_parent).unwrap();
-            let mut path = parent.path.clone();
-            path.push_str(&dir_name);
-
-            let hash_key = path.clone();
-
-            fs.push(File {
-                idx,
-                path,
-                is: FileType::Directory,
-                name: dir_name,
-                size: 0,
-                parent: Some(cur_parent),
-                files: vec![],
-            });
+            let file = File::new(dir_name, idx, &cur_parent, 0, FileType::Directory, &fs);
+            let hash_key = file.path.clone();
+            fs.push(file);
 
             let p = fs.get_mut(cur_parent).unwrap();
             p.files.push(idx);
@@ -84,20 +97,8 @@ pub fn parse(input: &str) -> Vec<File> {
         } else if starts_numeric(line) {
             let (size, name) = f_stat(line);
             let idx = fs.len();
-            let parent = fs.get(cur_parent).unwrap();
-            let mut path = parent.path.clone();
 
-            path.push_str(&name);
-
-            fs.push(File {
-                idx,
-                name,
-                size,
-                path,
-                is: FileType::File,
-                parent: Some(cur_parent),
-                files: vec![],
-            });
+            fs.push(File::new(name, idx, &cur_parent, size, FileType::File, &fs));
 
             let p = fs.get_mut(cur_parent).unwrap();
             p.files.push(idx);

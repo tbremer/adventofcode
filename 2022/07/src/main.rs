@@ -15,10 +15,9 @@ fn main() {
 
 fn pt_1(input: &str) -> usize {
     let fs = parse(input);
-    let it_fs = fs.iter();
     let mut total_size = 0;
 
-    for file in it_fs {
+    for file in fs.iter() {
         if file.is == FileType::Directory {
             let size = calc_dir(file.idx, &fs);
 
@@ -35,12 +34,12 @@ fn pt_2(input: &str) -> usize {
     let total_space = 70_000_000;
     let req_free = 30_000_000;
     let fs = parse(input);
-    let fs_it = fs.iter();
     let root_size = calc_dir(0, &fs);
     let cur_space = total_space - root_size;
     let needed = req_free - cur_space;
 
-    let mut dirs: Vec<usize> = fs_it
+    let mut dirs: Vec<usize> = fs
+        .iter()
         .filter(|file| file.is == FileType::Directory)
         .map(|dir| calc_dir(dir.idx, &fs))
         .collect();
@@ -48,12 +47,10 @@ fn pt_2(input: &str) -> usize {
     dirs.sort();
 
     for dir in dirs.iter() {
-        if dir > &needed {
+        if dir >= &needed {
             return *dir;
         }
     }
-
-    // println!("{:?}", (cur_space, needed));
 
     0
 }
