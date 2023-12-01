@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 const [cliWhich] = Bun.argv.slice(2);
 let which: string | number | undefined = cliWhich;
 
@@ -10,20 +12,21 @@ if (!which) {
 
 if (typeof which === 'string') which = parseInt(which, 10);
 
-const whichPath = `./${which < 10 ? `0${which}` : which}`;
+const whichString = which < 10 ? `0${which}` : which;
+const whichPath = `./day-${whichString}`;
 
-const { pt1, pt2 } = await import(whichPath);
+const puzzleInput = Bun.file(whichPath + '/input');
 
-const pt1Input = Bun.file(whichPath + '/1.part');
-let pt2Input = Bun.file(whichPath + '/2.part');
-
-if (!(await pt2Input.exists())) pt2Input = pt1Input;
-
-if (!(await pt1Input.exists())) {
-  console.log(`Input file for day ${which} not found\n`);
+if (!(await puzzleInput.exists())) {
+  console.log(
+    `Cannot find Input file for day ${which} in "${process.cwd()}".\nExiting… 👋`,
+  );
   process.exit(1);
 }
 
+const { pt1, pt2 } = await import(whichPath);
+const inputText = await puzzleInput.text();
+
 console.log(`Executing day ${which}...`);
-console.log('part 1:', pt1(await pt1Input.text()));
-console.log('part 2:', pt2(await pt2Input.text()));
+console.log('part 1:', pt1(inputText));
+console.log('part 2:', pt2(inputText));
