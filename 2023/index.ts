@@ -19,13 +19,11 @@ let pt2Input = Bun.file(whichPath + '/2.part');
 
 if (!(await pt2Input.exists())) pt2Input = pt1Input;
 
-console.log(pt1Input, pt1Input.size);
-
 if (!(await pt1Input.exists())) {
   console.log(`Input file for day ${which} not found\n`);
   process.exit(1);
 }
 
 console.log(`Executing day ${which}...`);
-pt1(await pt1Input.text());
-pt2(await pt2Input.text());
+console.log('part 1:', pt1(await pt1Input.text()));
+console.log('part 2:', pt2(await pt2Input.text()));
