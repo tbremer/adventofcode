@@ -1,4 +1,4 @@
-import { asLines, removeAlpha } from '../utils/string';
+import { asLines } from '../utils/string';
 
 export function pt1(input: string | string[]): number {
   const lines = asLines(input);
