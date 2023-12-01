@@ -1,13 +1,3 @@
-export function run() {
-  console.log('Test suite not implemented yet');
+export function pt1(input: string): void {}
 
-  console.log('Execution not yet implemented');
-
-  console.log('Bye 👋');
-}
-
-function test_1() {}
-function pt_1() {}
-
-function test_2() {}
-function pt_2() {}
+export function pt2(input: string): void {}
