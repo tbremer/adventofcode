@@ -32,17 +32,9 @@ export function pt2(input: string): number {
   const maxPerGame = parsed.map((g) => {
     const max = g.rounds.reduce(
       (acc, cur) => {
-        if (cur.red > acc.red) {
-          acc.red = cur.red;
-        }
-
-        if (cur.green > acc.green) {
-          acc.green = cur.green;
-        }
-
-        if (cur.blue > acc.blue) {
-          acc.blue = cur.blue;
-        }
+        acc.red = Math.max(acc.red, cur.red);
+        acc.green = Math.max(acc.green, cur.green);
+        acc.blue = Math.max(acc.blue, cur.blue);
 
         return acc;
       },
