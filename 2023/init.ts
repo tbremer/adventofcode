@@ -1,7 +1,10 @@
 #!/usr/bin/env bun
 
+const [cliWhich] = Bun.argv.slice(2);
+let which: string | number | undefined = cliWhich;
+
 const date = new Date();
-const day = date.getDate() + 1;
+const day = which ? Number(which) : date.getDate() + 1;
 
 const dayString = day < 10 ? `0${day}` : day;
 const dayPath = `./day-${dayString}`;
