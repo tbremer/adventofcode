@@ -36,7 +36,7 @@ export function pt2(input: string): null {
     `import { describe, expect, test } from 'bun:test';
 import { pt1, pt2 } from './index';
 
-describe('day-01', () => {
+describe('${dayString}', () => {
   test('part 1', () => {
     const input = \`\`;
     const expected = null;

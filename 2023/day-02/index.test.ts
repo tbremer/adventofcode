@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import { pt1, pt2 } from './index';
 
-describe('day-01', () => {
+describe('day-02', () => {
   test('part 1', () => {
     const input = `Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
     Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
