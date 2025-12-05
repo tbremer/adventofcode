@@ -1,4 +1,6 @@
 import { deepEqual } from "node:assert";
+import { readFile as nodeReadFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
 export function has<K extends PropertyKey>(
   o: object,
@@ -25,4 +27,9 @@ export function assert(actual: unknown, expected: unknown) {
     }
     return false;
   }
+}
+
+export async function readInputFile(directory: string) {
+  const filePath = resolve(directory, "input.txt");
+  return nodeReadFile(filePath, "utf-8");
 }
