@@ -13,10 +13,10 @@ importers:
         version: 4.21.0
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.3.8
+        specifier: 2.3.8
         version: 2.3.8
       '@types/node':
-        specifier: ^24.10.1
+        specifier: 24.10.1
         version: 24.10.1
       '@typescript/native-preview':
         specifier: 7.0.0-dev.20251204.1
