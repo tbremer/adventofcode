@@ -33,3 +33,9 @@ export async function readInputFile(directory: string) {
   const filePath = resolve(directory, "input.txt");
   return nodeReadFile(filePath, "utf-8");
 }
+
+export function runTestInput<T>(fn: () => T, val: T) {
+  if (!assert(fn(), val)) {
+    process.exit(1);
+  }
+}
